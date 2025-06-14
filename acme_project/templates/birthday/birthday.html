@@ -1,11 +1,28 @@
 <!-- templates/birthday/birthday.html -->
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
+  <div class="card col-4">
+    <div class="card-header">
+      Калькулятор ожидания дня рождения
+    </div>
+    <div class="card-body">
   <form>
-    <table>
-        {{ form.as_p }}
-    </table>
-    <input type="submit" value="Submit">
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Отправить"%}
   </form>
+    </div>
+  </div>
+  {% with data=request.GET %}
+    {% if form.is_valid %}
+      <h2>Привет, {{ data.first_name }} {{ data.last_name }}</h2>
+      {% if birthdey_countdown == 0 %}
+        С днем рождения!
+      {% else %}
+        Осталось дней до дня рождения: {{ birthday_countdown }}!
+      {% endif %}
+    {% endif %}
+  {% endwith %}
+
 {% endblock %}
